@@ -4,17 +4,51 @@ import calendar
 from tkinter import *
 from tkinter import ttk
 
+import json
+import os
+import requests
+import sys
+
+from pytz import timezone
+
 
 
 class OpenWeatherMap:
     def __init__(self):
         print('OpenWeatherMap object is created.')
 
-        API_KEY = '293951899fa98a759925ed3b0451b4cd'
-        API_URL = 'http://api.openweathermap.org/data/2.5/forecast?q={0}&units=metric&lang=ja&APPID={1}'
+        self.API_KEY = '293951899fa98a759925ed3b0451b4cd'
+        self.API_URL = 'http://api.openweathermap.org/data/2.5/forecast?q={0}&units=metric&lang=ja&APPID={1}'
+
 
     def GetWeatherinfo(self, city_name):
         print('GetWeatherinfo : {}'.format(city_name))
+
+        weathermap_url = self.API_URL.format(city_name, self.API_KEY)
+
+        response = requests.get(weathermap_url)
+        forecastData = json.loads(response.text)
+
+
+        if not ('list' in forecastData):
+            print('error')
+            return
+
+        for item in forecastData['list']:
+            forecastDatetime = timezone('Asia/Tokyo').localize(datetime.datetime.fromtimestamp(item['dt']))
+            weatherDescription = item['weather'][0]['description']
+            temperature = item['main']['temp']
+            rainfall = 0
+
+            #if 'rain' in item and '3h' in item['rain']:
+            if 'rain' in item:
+                rainfall = item['rain']['3h']
+
+            print('date:{0} weather:{1} temp(°C):{2} rainfall(mm):{3}'.format(forecastDatetime, weatherDescription, temperature, rainfall))
+            #print('日時:{0} 天気:{1} 気温(℃):{2} 雨量(mm):{3}'.format(
+                #forecastDatetime, weatherDescription, temperature, rainfall))
+
+        print(forecastData['city']['name'])
 
 
 
@@ -29,13 +63,13 @@ class Datetime:
 
         return datetime_str
 
+
     def GetWeekday(self):
         weekday_now = datetime.date.today().weekday()
         weekday_str = calendar.day_name[weekday_now]
 
         return weekday_str
         
-
 
 
 class Tkinter:
