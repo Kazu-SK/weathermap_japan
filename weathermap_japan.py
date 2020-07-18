@@ -17,8 +17,7 @@ class OpenWeatherMap:
     def __init__(self):
         print('OpenWeatherMap object is created.')
 
-        self.API_KEY = '293951899fa98a759925ed3b0451b4cd'
-        #self.API_KEY = '' #You must set your API_KEY.
+        self.API_KEY = '' #You must set your API_KEY.
         self.API_URL = 'http://api.openweathermap.org/data/2.5/forecast?q={0}&units=metric&lang=ja&APPID={1}'
 
         self.INFO_NUM = 5 #You must not change this number. 
