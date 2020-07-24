@@ -17,7 +17,7 @@ class OpenWeatherMap:
     def __init__(self):
         print('OpenWeatherMap object is created.')
 
-        self.API_KEY = '' #You must set your API_KEY.
+        self.API_KEY = '293951899fa98a759925ed3b0451b4cd' #You must set your API_KEY.
         self.API_URL = 'http://api.openweathermap.org/data/2.5/forecast?q={0}&units=metric&lang=ja&APPID={1}'
 
         self.INFO_NUM = 5 #You must not change this number. 
@@ -96,7 +96,7 @@ class Tkinter:
         self.owm_obj = OpenWeatherMap()
         self.datetime_obj = Datetime()
 
-        self.city_name = 'Morioka'
+        self.city_name = 'Nagoya'
 
         self.REFERENCE_ICON = {
             "01d":"weather/01d.png","01n":"weather/01n.png",
@@ -137,8 +137,27 @@ class Tkinter:
         self.root.after(1000, self.UpdateWeekday)
 
 
-    def UpdateWeatherinfo(self):
-        self.owm_obj.GetWeatherinfo(self.city_name)
+    def UpdateWeatherinfo(self, timer = True):
+        #self.owm_obj.GetWeatherinfo(self.city_name)
+        weather_forecasttime, weather_description, weather_icon, city_temperature, city_rainfall = self.owm_obj.GetWeatherinfo(self.city_name)
+
+        for i in range(6):
+            city_temperature[i] = str(city_temperature[i]) + '°C'            
+            i#city_rainfall[i] = str(city_rainfall[i]) + 'mm'
+
+            self.forecasttime_labels[i].configure(text = weather_forecasttime[i])
+            self.description_labels[i].configure(text = weather_description[i])
+            self.temperature_labels[i].configure(text = city_temperature[i])
+            self.rainfall_labels[i].configure(text = city_rainfall[i])
+
+            self.icon[i] = PhotoImage(file = self.REFERENCE_ICON[weather_icon[i]])
+            self.weather_labels[i].configure(image = self.icon[i])
+
+            #self.weather_labels[i].update()
+
+        if timer == True:
+            print(self.datetime_obj.GetDatetime())
+            self.root.after(60000, self.UpdateWeatherinfo)
 
 
     def UpdateCityname(self):
@@ -155,7 +174,7 @@ class Tkinter:
         print(self.city_name)
 
         self.UpdateCityname()
-        self.UpdateWeatherinfo()
+        self.UpdateWeatherinfo(timer = False)
 
     
     def CreateListbox(self):
@@ -214,19 +233,20 @@ class Tkinter:
         self.label_cityname.grid(row = 1, column = 2, columnspan = 2, padx = 5, pady = 5)
         
         #Weather
-
-
         weather_forecasttime, weather_description, weather_icon, city_temperature, city_rainfall = self.owm_obj.GetWeatherinfo(self.city_name)
 
 
         for i in range(6):
-
             self.forecasttime_labels.append(ttk.Label(self.main_frame, text = weather_forecasttime[i], font = ("", 30))) 
             self.forecasttime_labels[i].grid(row = 2, column = i, padx = 10, pady = 30)
             self.description_labels.append(ttk.Label(self.main_frame, text = weather_description[i], font = ("", 10)))
             self.description_labels[i].grid(row = 4, column = i, pady = 10)
+
+            city_temperature[i] = str(city_temperature[i]) + '°C'            
             self.temperature_labels.append(ttk.Label(self.main_frame, text = city_temperature[i], font = ("", 30)))
             self.temperature_labels[i].grid(row = 5, column = i, padx = 30, pady = 10)
+
+            #city_rainfall[i] = str(city_rainfall[i]) + 'mm'
             self.rainfall_labels.append(ttk.Label(self.main_frame, text = city_rainfall[i], font = ("", 30)))
             self.rainfall_labels[i].grid(row = 6, column = i, padx = 30, pady = 10)
 
@@ -235,8 +255,6 @@ class Tkinter:
             self.weather_labels[i].grid(row = 3, column = i, padx = 30, pady = 10)
 
         
-
-
         #Update
         self.UpdateDateTime()
         self.UpdateWeekday()
