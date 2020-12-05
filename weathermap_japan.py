@@ -17,7 +17,8 @@ class OpenWeatherMap:
     def __init__(self):
         print('OpenWeatherMap object is created.')
 
-        self.API_KEY = '' #You must set your API_KEY.
+        #self.API_KEY = '' #You must set your API_KEY.
+        self.API_KEY = '293951899fa98a759925ed3b0451b4cd'  #You must set your API_KEY
         self.API_URL = 'http://api.openweathermap.org/data/2.5/forecast?q={0}&units=metric&lang=ja&APPID={1}'
 
         self.INFO_NUM = 5 #You must not change this number. 
@@ -89,8 +90,12 @@ class Tkinter:
     def __init__(self):
         self.root = Tk()
         self.root.title('Weathermap_Map')
+        self.root["bg"] = "black"
+        #self.root.configure(background = "black")
 
-        self.main_frame = ttk.Frame(self.root)
+        flame_style = ttk.Style()
+        flame_style.configure('s.TFrame',background='black')
+        self.main_frame = ttk.Frame(self.root,style = 's.TFrame')
         self.main_frame.grid()
 
         self.owm_obj = OpenWeatherMap()
@@ -122,7 +127,7 @@ class Tkinter:
     def UpdateDateTime(self):
 
         self.dt_str = self.datetime_obj.GetDatetime()
-        self.label_date.configure(text = self.dt_str)
+        self.label_date.configure(text = self.dt_str,background = "black")
 
         self.label_date.update()
         self.root.after(1000, self.UpdateDateTime)
@@ -131,7 +136,7 @@ class Tkinter:
     def UpdateWeekday(self):
 
         self.weekday_str = self.datetime_obj.GetWeekday()
-        self.label_weekday.configure(text = self.weekday_str)
+        self.label_weekday.configure(text = self.weekday_str, background = "black")
 
         self.label_weekday.update()
         self.root.after(1000, self.UpdateWeekday)
@@ -143,15 +148,15 @@ class Tkinter:
 
         for i in range(6):
             city_temperature[i] = str(city_temperature[i]) + '°C'            
-            i#city_rainfall[i] = str(city_rainfall[i]) + 'mm'
+            #city_rainfall[i] = str(city_rainfall[i]) + 'mm'
 
-            self.forecasttime_labels[i].configure(text = weather_forecasttime[i])
-            self.description_labels[i].configure(text = weather_description[i])
-            self.temperature_labels[i].configure(text = city_temperature[i])
-            self.rainfall_labels[i].configure(text = city_rainfall[i])
+            self.forecasttime_labels[i].configure(text = weather_forecasttime[i],background = "black",foreground = "white")
+            self.description_labels[i].configure(text = weather_description[i],background = "black",foreground = "white")
+            self.temperature_labels[i].configure(text = city_temperature[i],background = "black",foreground = "white")
+            self.rainfall_labels[i].configure(text = city_rainfall[i],background = "black",foreground = "white")
 
             self.icon[i] = PhotoImage(file = self.REFERENCE_ICON[weather_icon[i]])
-            self.weather_labels[i].configure(image = self.icon[i])
+            self.weather_labels[i].configure(image = self.icon[i],background = "black")
 
             #self.weather_labels[i].update()
 
@@ -162,7 +167,7 @@ class Tkinter:
 
     def UpdateCityname(self):
 
-        self.label_cityname.configure(text = self.city_name)
+        self.label_cityname.configure(text = self.city_name,background = "black")
         self.label_cityname.update()
 
 
@@ -189,48 +194,58 @@ class Tkinter:
                 
 
         v1 = StringVar(value=japan_city)
-        self.lb = Listbox(self.main_frame, listvariable = v1, height = 13)
+        self.lb = Listbox(self.main_frame, listvariable = v1, height = 13, background = "black",foreground = "white")
         self.lb.grid(row=0, column=0, padx = 5, pady = 5, sticky=(N,E,S,W))
 
         # Scrollbar
         self.scrollbar = ttk.Scrollbar(
             self.main_frame, 
             orient=VERTICAL, 
-            command=self.lb.yview)
+            command=self.lb.yview,
+            )
+
         self.lb['yscrollcommand'] = self.scrollbar.set
         self.scrollbar.grid(row = 0,column = 1, rowspan = 2, sticky=(N,S,W))
 
 
     def CreateWidget(self):
-
+        
+        
         #ListBox
         self.CreateListbox()
+        
 
         #Button
-        self.ok_button = ttk.Button(self.main_frame, text = 'OK', command = self.ClickButton)
+        button_style = ttk.Style()
+        button_style.configure('s.TButton',foreground='white',background='black')
+        self.ok_button = ttk.Button(self.main_frame, text = 'OK', command = self.ClickButton,style='s.TButton')
         self.ok_button.grid(row = 1, column = 0, padx = 5, pady = 5, sticky = (N, E, W, S))
-       
+        #self.ok_button.config(background="black")
+        
+        
         #DateTime
         self.dt_str = self.datetime_obj.GetDatetime()
 
-        self.label_date = ttk.Label(self.main_frame, text = self.dt_str, font = ("", 45))
+        self.label_date = ttk.Label(self.main_frame, text = self.dt_str, font = ("", 45), background = "black", foreground = "white")
         self.label_date.grid(row = 0, column = 1, columnspan = 4)
+        
 
         #Weekday
         self.weekday_str = self.datetime_obj.GetWeekday()
 
-        self.label_weekday = ttk.Label(self.main_frame, text = self.weekday_str, font = ("", 35))
+        self.label_weekday = ttk.Label(self.main_frame, text = self.weekday_str, font = ("", 35), background = "black", foreground = "white")
         self.label_weekday.grid(row = 0, column = 2, columnspan = 2, pady = 30, sticky = S)
 
         #Irast
         irast_info = PhotoImage(file = 'weathermap_irast.png')
 
-        label_irast = ttk.Label(self.main_frame, image = irast_info)
+        label_irast = ttk.Label(self.main_frame, image = irast_info, background = "black", foreground = "white")
         label_irast.grid(row = 0, column = 4, columnspan = 2, rowspan = 2)
 
         #Cityname
-        self.label_cityname = ttk.Label(self.main_frame, text = self.city_name, font = ("", 20))
+        self.label_cityname = ttk.Label(self.main_frame, text = self.city_name, font = ("", 20), background = "black", foreground = "white")
         self.label_cityname.grid(row = 1, column = 2, columnspan = 2, padx = 5, pady = 5)
+        
         
         #Weather
         weather_forecasttime, weather_description, weather_icon, city_temperature, city_rainfall = self.owm_obj.GetWeatherinfo(self.city_name)
@@ -253,12 +268,13 @@ class Tkinter:
             self.icon.append(PhotoImage(file = self.REFERENCE_ICON[weather_icon[i]]))
             self.weather_labels.append(ttk.Label(self.main_frame, image = self.icon[i]))
             self.weather_labels[i].grid(row = 3, column = i, padx = 30, pady = 10)
-
+        
         
         #Update
         self.UpdateDateTime()
         self.UpdateWeekday()
         self.UpdateWeatherinfo()
+        
 
         self.root.mainloop()
 
