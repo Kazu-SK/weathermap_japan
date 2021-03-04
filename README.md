@@ -11,8 +11,18 @@
 # 使用方法
 
 事前にOpenWeatherMapのAPIキーを取得しておく必要がある。
+* インストール
+```
+git clone 
+```
+
 
 * weathermap_japan.pyのself.API_KEY = ''に、自分のAPIキーを入力する。
 ```
 self.API_KEY = ''  #You must set your API_KEY.
+```
+
+* 実行
+```
+python3 weathermap_japan.py
 ```
