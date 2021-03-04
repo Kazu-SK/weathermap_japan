@@ -13,7 +13,7 @@
 事前にOpenWeatherMapのAPIキーを取得しておく必要がある。
 * インストール
 ```
-git clone 
+https://github.com/Kazu-SK/weathermap_japan.git
 ```
 
 
