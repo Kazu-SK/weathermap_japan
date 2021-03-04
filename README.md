@@ -7,3 +7,12 @@
 # 環境
 * Python3 3.7.3
 * tkinter 8.6
+
+# 使用方法
+
+事前にOpenWeatherMapのAPIキーを取得しておく必要がある。
+
+* weathermap_japan.pyのself.API_KEY = ''に、自分のAPIキーを入力する。
+'''
+self.API_KEY = ''  #You must set your API_KEY.
+'''
