@@ -17,15 +17,14 @@ class OpenWeatherMap:
     def __init__(self):
         print('OpenWeatherMap object is created.')
 
-        #self.API_KEY = '' #You must set your API_KEY.
-        self.API_KEY = '293951899fa98a759925ed3b0451b4cd'  #You must set your API_KEY
+        self.API_KEY = '' #You must set your API_KEY.
         self.API_URL = 'http://api.openweathermap.org/data/2.5/forecast?q={0}&units=metric&lang=ja&APPID={1}'
 
-        self.INFO_NUM = 5 #You must not change this number. 
+        self.INFO_NUM = 5 #Weather every 3 hours. 
 
 
     def GetWeatherinfo(self, city_name):
-        print('GetWeatherinfo : {}'.format(city_name))
+        #print('GetWeatherinfo : {}'.format(city_name))
 
         weathermap_url = self.API_URL.format(city_name, self.API_KEY)
 
@@ -60,7 +59,7 @@ class OpenWeatherMap:
                 break
 
 
-        print(forecastData['city']['name'])
+        #print(forecastData['city']['name'])
 
         return forecast_time, weather_description, weather_icon, city_temperature, city_rainfall
 
@@ -73,7 +72,7 @@ class Datetime:
     
     def GetDatetime(self):
         datetime_now = datetime.datetime.fromtimestamp(time.time())
-        datetime_str = datetime_now.strftime('%Y/%m/%d %H:%M:%S') 
+        datetime_str = datetime_now.strftime('%Y/%m/%d    %H : %M') 
 
         return datetime_str
 
@@ -161,7 +160,7 @@ class Tkinter:
             #self.weather_labels[i].update()
 
         if timer == True:
-            print(self.datetime_obj.GetDatetime())
+            #print(self.datetime_obj.GetDatetime())
             self.root.after(60000, self.UpdateWeatherinfo)
 
 
@@ -176,7 +175,7 @@ class Tkinter:
         for i in self.lb.curselection():
             self.city_name = self.lb.get(i)
         
-        print(self.city_name)
+        #print(self.city_name)
 
         self.UpdateCityname()
         self.UpdateWeatherinfo(timer = False)
